@@ -26,7 +26,7 @@ export default NextAuth({
      * on production, it's recommended to use the node-jose-tools to
      * generate one.
      */
-    secret: process.env.NEXT_PUBLIC_SECRET,
+    secret: process.env.SECRET,
   },
   /**
    * after login, there are some callback that are called, and among them we

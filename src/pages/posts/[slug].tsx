@@ -45,9 +45,7 @@ export const getServerSideProps: GetServerSideProps = async ({
   if (!session?.activeSubscription) {
     return {
       redirect: {
-        destination: session
-          ? `${process.env.NEXTAUTH_URL}/posts/preview/${slug}`
-          : '/',
+        destination: '/',
         /**
          * by setting this, we say to crawlers and
          * search engines that we're just doing a simple redirect

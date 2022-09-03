@@ -40,6 +40,10 @@ export default NextAuth({
      * some operation.
      */
     async signIn({ user }) {
+      console.log(
+        '🚀 ~ file: [...nextauth].ts ~ line 43 ~ signIn ~ user',
+        user
+      );
       const { email } = user;
 
       try {

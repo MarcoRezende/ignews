@@ -26,7 +26,7 @@ export default NextAuth({
      * on production, it's recommended to use the node-jose-tools to
      * generate one.
      */
-    secret: process.env.SECRET,
+    secret: process.env.NEXTAUTH_SECRET,
   },
   /**
    * after login, there are some callback that are called, and among them we
@@ -40,10 +40,6 @@ export default NextAuth({
      * some operation.
      */
     async signIn({ user }) {
-      console.log(
-        '🚀 ~ file: [...nextauth].ts ~ line 43 ~ signIn ~ user',
-        user
-      );
       const { email } = user;
 
       try {
@@ -108,10 +104,6 @@ export default NextAuth({
      * we can add extra data to the session object.
      */
     async session({ session }) {
-      console.log(
-        '🚀 ~ file: [...nextauth].ts ~ line 111 ~ session ~ session',
-        session
-      );
       try {
         const activeSubscription = await fauna.query(
           query.Get(

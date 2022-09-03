@@ -46,7 +46,7 @@ export const getServerSideProps: GetServerSideProps = async ({
     return {
       redirect: {
         destination: session
-          ? `${process.env.NEXTAUTH_URL}/preview/${slug}`
+          ? `${process.env.NEXTAUTH_URL}/posts/preview/${slug}`
           : '/',
         /**
          * by setting this, we say to crawlers and

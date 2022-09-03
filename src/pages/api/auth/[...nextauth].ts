@@ -1,3 +1,4 @@
+import { FaunaAdapter } from '@next-auth/fauna-adapter';
 import { query } from 'faunadb';
 import NextAuth from 'next-auth';
 import GithubProvider from 'next-auth/providers/github';
@@ -19,6 +20,7 @@ export default NextAuth({
       clientSecret: process.env.GITHUB_SECRET,
     }),
   ],
+  adapter: FaunaAdapter(fauna),
 
   /**
    * after login, there are some callback that are called, and among them we

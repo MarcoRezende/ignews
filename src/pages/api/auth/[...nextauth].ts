@@ -19,15 +19,7 @@ export default NextAuth({
       clientSecret: process.env.GITHUB_SECRET,
     }),
   ],
-  jwt: {
-    /**
-     * random key generated to encode/decode the NextAuth.js issued JWT
-     *
-     * on production, it's recommended to use the node-jose-tools to
-     * generate one.
-     */
-    secret: process.env.NEXTAUTH_SECRET || 'default',
-  },
+
   /**
    * after login, there are some callback that are called, and among them we
    * have `signIn`.
@@ -139,4 +131,5 @@ export default NextAuth({
       }
     },
   },
+  // secret: process.env.NEXTAUTH_SECRET,
 });

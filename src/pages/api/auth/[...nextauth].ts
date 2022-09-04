@@ -20,7 +20,7 @@ export default NextAuth({
       clientSecret: process.env.GITHUB_SECRET,
     }),
   ],
-  adapter: FaunaAdapter(fauna),
+  // adapter: FaunaAdapter(fauna),
 
   /**
    * after login, there are some callback that are called, and among them we

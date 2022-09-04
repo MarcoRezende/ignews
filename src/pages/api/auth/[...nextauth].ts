@@ -1,17 +1,7 @@
-import { FaunaAdapter } from '@next-auth/fauna-adapter';
 import { query } from 'faunadb';
 import NextAuth from 'next-auth';
 import GithubProvider from 'next-auth/providers/github';
-
 import { fauna } from '../../../services/fauna';
-
-/**
- * the path till here and the file name (...nextauth) are important
- * for the app to work.
- *
- * on the github side, we configured a oath app that will post data (callback)
- * here (...nextauth), using the same path (http://localhost:3000/api/auth/callback)
- */
 
 export default NextAuth({
   providers: [
@@ -20,66 +10,25 @@ export default NextAuth({
       clientSecret: process.env.GITHUB_SECRET,
     }),
   ],
-  // adapter: FaunaAdapter(fauna),
 
-  /**
-   * after login, there are some callback that are called, and among them we
-   * have `signIn`.
-   *
-   * it returns the some inforamtion like the user, account, profile, etc.
-   */
   callbacks: {
-    /**
-     * it must return false (failure) or true (success) after
-     * some operation.
-     */
     async signIn({ user }) {
       const { email } = user;
 
       try {
-        /**
-         * this is the fauna syntax (FQL) to use a new user on DB.
-         *
-         * notice we're using the `query` method to run our queries.
-         *
-         * although we've could searched for a user with the specific email
-         * and then create or not, this way allows us to make just one request.
-         */
         await fauna.query(
           query.If(
             query.Not(
               query.Exists(
                 query.Match(
-                  /**
-                   * we can do this because we've set an index on
-                   * fauna dashboard.
-                   *
-                   * index work like a key in a object.
-                   *
-                   * as an analogy, rather than map row by row and
-                   * find some that matches the query "email = marco@email",
-                   * it goes straight to the row with the index "marco@email":
-                   *
-                   * "marco@email": { name: "marco", email: "marco@email" }
-                   *
-                   * and not:
-                   * 0: { name: "marco", email: "marco@email" },
-                   * 1: { ... },
-                   * 2: { ... },
-                   *
-                   */
                   query.Index('users_by_email'),
                   query.Casefold(user.email)
                 )
               )
             ),
-            /**
-             * this is the "then" (when it matches)
-             */
+
             query.Create(query.Collection('users'), { data: { email } }),
-            /**
-             * that's the "else"
-             */
+
             query.Get(
               query.Match(
                 query.Index('users_by_email'),
@@ -94,9 +43,7 @@ export default NextAuth({
         return false;
       }
     },
-    /**
-     * we can add extra data to the session object.
-     */
+
     async session({ session }) {
       try {
         const activeSubscription = await fauna.query(
